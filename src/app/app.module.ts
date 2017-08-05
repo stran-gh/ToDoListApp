@@ -7,6 +7,8 @@ import { AddUserComponent } from './add-user/add-user.component';
 import { ListUserComponent } from './list-user/list-user.component';
 import { ToDoListComponent } from './to-do-list/to-do-list.component'; 
 
+import { UserService } from './services/user.service';
+
 
 
 @NgModule({
@@ -20,7 +22,7 @@ import { ToDoListComponent } from './to-do-list/to-do-list.component';
   	NgbModule.forRoot(),
     BrowserModule
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { UserService } from '../services/user.service';
+
 
 @Component({
   selector: 'list-user',
@@ -7,5 +9,7 @@ import { Component } from '@angular/core';
 })
 
 export class ListUserComponent{
-
+	constructor(private userService:UserService){}
+	userArray:string[] = this.userService.userArray;
+	
 }

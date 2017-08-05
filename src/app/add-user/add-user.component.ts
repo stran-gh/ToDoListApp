@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'add-user',
@@ -7,6 +8,11 @@ import { Component } from '@angular/core';
 })
 
 export class AddUserComponent{
-	test = 'test';
+	constructor(private userService: UserService){}
+
+	addNewUser(){
+		this.userService.userArray.push("Hello");
+		console.log(this.userService.userArray);
+	}
 }
 
