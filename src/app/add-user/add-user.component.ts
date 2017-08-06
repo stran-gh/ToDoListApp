@@ -10,9 +10,19 @@ import { UserService } from '../services/user.service';
 export class AddUserComponent{
 	constructor(private userService: UserService){}
 
+	userName:string;
+
 	addNewUser(){
-		this.userService.userArray.push("Hello");
+		if(this.userName == null || this.userName == ""){
+			//Do nothing
+		}
+		else{
+		this.userService.userArray.push(this.userName);
+		this.userName = "";
 		console.log(this.userService.userArray);
+		}	
 	}
+
+
 }
 

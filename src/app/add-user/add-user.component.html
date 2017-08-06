@@ -1,1 +1,11 @@
-<button class="btn btn-primary" (click)="addNewUser()">Add User</button>
+<div class="form-group">
+	<div class="row">
+		<div class="col-lg-10">
+			<input type="text" placeholder="Username" class="form-control" (keyup.enter)="addNewUser()" [(ngModel)]="userName"> 
+		</div>
+
+		<div class="col-lg-2">
+			<button class="btn btn-primary" (click)="addNewUser()">Add User</button>
+		</div>
+	</div>
+</div>

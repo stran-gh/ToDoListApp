@@ -12,4 +12,9 @@ export class ListUserComponent{
 	constructor(private userService:UserService){}
 	userArray:string[] = this.userService.userArray;
 	
+	selectUser(event, user){
+		this.userService.user = user;
+		console.log(this.userService.user);
+		
+	}
 }
