@@ -15,6 +15,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
+import { HeaderComponent } from './header/header.component';
 
 
 
@@ -26,7 +27,8 @@ import { HomeComponent } from './home/home.component';
     ToDoListComponent,
     SignupComponent,
     SigninComponent,
-    HomeComponent
+    HomeComponent,
+    HeaderComponent
   ],
   imports: [
   	NgbModule.forRoot(),
