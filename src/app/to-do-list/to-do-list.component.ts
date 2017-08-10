@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 
 
@@ -9,7 +9,17 @@ import { UserService } from '../services/user.service';
 })
 
 export class ToDoListComponent{
+
+	currentUser: string;
+
 	constructor(private userService:UserService){}
-	userName = this.userService.user;
+
+	ngOnInit(){
+		this.userService.currentUser.subscribe(
+			(currentUser:string) => {
+				this.currentUser = currentUser;
+			}
+		);
+	}
 
 }

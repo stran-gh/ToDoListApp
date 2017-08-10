@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from './services/user.service';
+import * as firebase from 'firebase';
 
 
 @Component({
@@ -8,6 +9,13 @@ import { UserService } from './services/user.service';
   styleUrls: ['./app.component.css'],
   providers: [UserService]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Chore List';
+
+  ngOnInit(){
+  	firebase.initializeApp({
+  		apiKey: "AIzaSyCwIZz-iV48zx0GyFo8zDW4DCpxqDQ2Z-k",
+    	authDomain: "todoproject-8af70.firebaseapp.com"
+  	});
+  }
 }
