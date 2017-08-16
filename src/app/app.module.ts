@@ -16,6 +16,7 @@ import { SigninComponent } from './auth/signin/signin.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
+import { AuthGuard } from './services/auth-guard.service';
 
 
 
@@ -36,7 +37,7 @@ import { HeaderComponent } from './header/header.component';
     FormsModule,
     AppRoutingModule
   ],
-  providers: [UserService, AuthService],
+  providers: [UserService, AuthService, AuthGuard], 
   bootstrap: [AppComponent]
 })
 export class AppModule { }
