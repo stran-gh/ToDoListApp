@@ -19,7 +19,6 @@ export class AddUserComponent{
 		else{
 		this.userService.userArray.push(this.userName);
 		this.userName = "";
-		console.log(this.userService.userArray);
 		}	
 	}
 

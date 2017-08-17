@@ -1,4 +1,27 @@
+<h3 class="text-center" *ngIf="userSelected == true">{{currentUser}}'s To Do List</h3>
 
-		<h3>  To Do List </h3>
-		<br>
-		<h1> {{currentUser}} </h1>
+<div class="row" *ngIf="userSelected == true">
+	<div class="col-lg-6 ">
+		<input 
+		type="text" 
+		placeholder="New Task" 
+		class="form-control" 
+		(keyup.enter)="addNewItem()" 
+		[(ngModel)]="ingredientToAdd">
+	</div>
+	<div class="col-lg-2">
+		<button 
+		class="btn btn-primary float-right" 
+		(click)="addNewItem()"
+		> Add Task 
+		</button>
+	</div>
+	<div class="col-lg-12">
+		<ul class="list-group">
+			<li class="list-group-item" *ngFor="let chore of choreList">
+				{{chore}} 
+			</li>
+		</ul>
+	</div>
+</div>
+

@@ -11,6 +11,9 @@ import { UserService } from '../services/user.service';
 export class ToDoListComponent{
 
 	currentUser: string;
+	userSelected: boolean = false;
+	choreList: string[] = [];
+	ingredientToAdd: string;
 
 	constructor(private userService:UserService){}
 
@@ -18,8 +21,22 @@ export class ToDoListComponent{
 		this.userService.currentUser.subscribe(
 			(currentUser:string) => {
 				this.currentUser = currentUser;
+				this.userSelected = true;
 			}
 		);
 	}
+
+	addNewItem(){
+		if(this.ingredientToAdd == null || this.ingredientToAdd == ""){
+			//do nothing
+		}
+		else{
+			this.choreList.push(this.ingredientToAdd);
+			this.ingredientToAdd = "";
+		}
+		console.log(this.choreList);
+	}
+
+
 
 }
