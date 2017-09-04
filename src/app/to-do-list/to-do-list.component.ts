@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
+import { DatabaseService } from '../services/database.service';
 
 
 @Component({
@@ -11,31 +12,24 @@ import { UserService } from '../services/user.service';
 export class ToDoListComponent{
 
 	currentUser: string;
+	choreName: string;
 	
-	// choreList: string[] = [];
-	// choreToAdd: string;
+	
 
-	constructor(private userService:UserService){}
+	constructor(private userService: UserService, private databaseService: DatabaseService){}
 
 	ngOnInit(){
 		this.userService.currentUser.subscribe(
 			(currentUser:string) => {
 				this.currentUser = currentUser;
-				console.log("ngoninit todolistcomponent");
 			}
 		);
 	}
 
-	// addNewItem(){
-	// 	if(this.choreToAdd == null || this.choreToAdd == ""){
-	// 		//do nothing
-	// 	}
-	// 	else{
-	// 		this.choreList.push(this.choreToAdd);
-	// 		this.choreToAdd = "";
-	// 	}
-	// 	console.log(this.choreList);
-	// }
+	addNewChore(){
+		this.databaseService.storeChore(this.currentUser, this.choreName);
+	}
+	
 
 
 

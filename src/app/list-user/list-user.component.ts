@@ -32,10 +32,10 @@ export class ListUserComponent{
 	selectUser(event, user){
 		this.selectedUser = user;
 		this.userService.currentUser.emit(this.selectedUser);
+		this.databaseService.getCurrentUserKey(this.selectedUser);
 	}
 
 	deleteUser(user){
-		console.log("clicked on delete user");
 		this.databaseService.deleteUser(user);
 		this.userService.currentUser.emit(null);
 		this.displayUsers();
@@ -46,7 +46,7 @@ export class ListUserComponent{
 			//Do nothing
 		}
 		else{
-			this.databaseService.storeUser(this.userName)
+			this.databaseService.storeUser(this.userName, null)
 			.subscribe(
 				(response) => console.log(response),
 				(error) => console.log(error)
