@@ -11,9 +11,9 @@ import { UserService } from '../services/user.service';
 export class ToDoListComponent{
 
 	currentUser: string;
-	userSelected: boolean = false;
-	choreList: string[] = [];
-	ingredientToAdd: string;
+	
+	// choreList: string[] = [];
+	// choreToAdd: string;
 
 	constructor(private userService:UserService){}
 
@@ -21,21 +21,21 @@ export class ToDoListComponent{
 		this.userService.currentUser.subscribe(
 			(currentUser:string) => {
 				this.currentUser = currentUser;
-				this.userSelected = true;
+				console.log("ngoninit todolistcomponent");
 			}
 		);
 	}
 
-	addNewItem(){
-		if(this.ingredientToAdd == null || this.ingredientToAdd == ""){
-			//do nothing
-		}
-		else{
-			this.choreList.push(this.ingredientToAdd);
-			this.ingredientToAdd = "";
-		}
-		console.log(this.choreList);
-	}
+	// addNewItem(){
+	// 	if(this.choreToAdd == null || this.choreToAdd == ""){
+	// 		//do nothing
+	// 	}
+	// 	else{
+	// 		this.choreList.push(this.choreToAdd);
+	// 		this.choreToAdd = "";
+	// 	}
+	// 	console.log(this.choreList);
+	// }
 
 
 

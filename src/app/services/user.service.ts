@@ -9,5 +9,7 @@ export class UserService{
 	setUser(user){
 		this.currentUser = user;
 	}
+
+	
 	
 }
