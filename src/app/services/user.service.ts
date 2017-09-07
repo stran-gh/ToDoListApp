@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { Chore } from '../models/chore.model';
 
 @Injectable()
 export class UserService{

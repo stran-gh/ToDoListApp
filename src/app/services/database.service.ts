@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { User } from '../models/user.model';
 import { Chore } from '../models/chore.model';
+import { EventEmitter } from '@angular/core';
 import * as firebase from 'firebase';
 import 'rxjs/Rx';
 
@@ -10,28 +11,27 @@ export class DatabaseService{
 	constructor(private http: Http){}
 
 	currentUserKey: string;
+	currentUserChores = new EventEmitter<Chore[]>();
 
-	storeUser(user: string, chore: Chore){
-		return this.http.post('https://todoproject-8af70.firebaseio.com/data.json', new User(user, chore));
+
+	storeUser(user: string, chores: Chore){
+		return this.http.post('https://todoproject-8af70.firebaseio.com/data.json', new User(user, chores));
 	}
 
-	storeChore(user: string, choreName: string){
+	storeChore(user: string, choreName: string, choreDescription: string){
+		var data = firebase.database().ref("/data/"+ this.currentUserKey);
+
 		//create post object
 		var postData = {
-			user: user,
-			chore: {
-				title: choreName,
-				description: "test"
-			}
-		};
-		var updates = {};
-		updates['/data/' + this.currentUserKey] = postData;
-		return firebase.database().ref().update(updates);
+					chore: choreName,
+					description: choreDescription
+				};	
+		data.child("chores").push(postData); 
 
 	}
 
 	getCurrentUserKey(user: string){
-		var data = firebase.database().ref("data");
+		var data = firebase.database().ref("/data/");
 		data.once('value', (snapshot) => {
 			var list = snapshot.val();
 			for(let key in list){
@@ -42,8 +42,23 @@ export class DatabaseService{
 		});
 	}
 
+	getChores(user: string) : Promise<any> {
+		var data = firebase.database().ref("/data/" + this.currentUserKey + "/chores");
+		return new Promise<any>((resolve, reject) => {
+			data.once('value', (snapshot) => {
+				var choresList: Chore[] = [];
+				var list = snapshot.val();
+				for(let key in list){
+					choresList.push(new Chore(list[key].chore, list[key].description));
+				}
+				resolve(choresList);
+			});
+		})
+		
+	}
+
 	getUsers() : Promise<any> {
-		var data = firebase.database().ref("data");
+		var data = firebase.database().ref("/data/");
 		let userArray: string[] = [];
 		return new Promise<any>((resolve, reject) => {
 			data.on('value', function(snapshot) {
@@ -60,7 +75,7 @@ export class DatabaseService{
 	}
 
 	deleteUser(user: string){
-		var database = firebase.database().ref("data");
+		var database = firebase.database().ref("/data/");
 
 		database.once('value', function(snapshot) {
 				var test = snapshot.val();
@@ -71,5 +86,18 @@ export class DatabaseService{
 					}
 				}
 			});	
+	}
+
+	deleteChore(choreName: string){
+		var database = firebase.database().ref("/data/" + this.currentUserKey + "/chores/");
+		var userKey = this.currentUserKey;
+		database.once('value', function(snapshot){
+			var choreList = snapshot.val();
+			for(let key in choreList){
+				if(choreList[key].chore == choreName){
+					firebase.database().ref("/data/" + userKey + "/chores/" + key).remove();
+				}
+			}
+		})
 	}
 }

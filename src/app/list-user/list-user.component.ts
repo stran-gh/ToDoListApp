@@ -29,10 +29,15 @@ export class ListUserComponent{
 			);
 	}
 
+	// displayChoreCount(){
+		
+	// }
+
 	selectUser(event, user){
 		this.selectedUser = user;
 		this.userService.currentUser.emit(this.selectedUser);
 		this.databaseService.getCurrentUserKey(this.selectedUser);
+		this.databaseService.getChores(this.selectedUser);
 	}
 
 	deleteUser(user){

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { DatabaseService } from '../services/database.service';
-
+import { Chore } from '../models/chore.model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'to-do-list',
@@ -12,7 +13,8 @@ import { DatabaseService } from '../services/database.service';
 export class ToDoListComponent{
 
 	currentUser: string;
-	choreName: string;
+	choresList: Chore[] = [];
+	choreDescription: string;
 	
 	
 
@@ -26,11 +28,25 @@ export class ToDoListComponent{
 		);
 	}
 
-	addNewChore(){
-		this.databaseService.storeChore(this.currentUser, this.choreName);
-	}
 	
+	
+	displayChores(){
+			return this.databaseService.getChores(this.currentUser).then(
+				(result) => {
+					this.choresList = result;
+				}
+			);
+	}
 
+	onAddChore(f: NgForm){
+		this.databaseService.storeChore(this.currentUser, f.value.choreTitle, f.value.choreDescription);
+		this.displayChores();
+	}
+
+	onDeleteChore(chore){
+		this.databaseService.deleteChore(chore);
+		this.displayChores();
+	}
 
 
 }
