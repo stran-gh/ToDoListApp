@@ -18,7 +18,8 @@ export class ToDoListComponent{
 	
 	
 
-	constructor(private userService: UserService, private databaseService: DatabaseService){}
+	constructor(private userService: UserService, private databaseService: DatabaseService){
+	}
 
 	ngOnInit(){
 		this.userService.currentUser.subscribe(
@@ -26,12 +27,14 @@ export class ToDoListComponent{
 				this.currentUser = currentUser;
 			}
 		);
+
+		this.databaseService.currentUserChores.subscribe(
+			(resultList: Chore[]) => this.choresList = resultList
+		);
 	}
 
-	
-	
 	displayChores(){
-			return this.databaseService.getChores(this.currentUser).then(
+			return this.databaseService.getChores().then(
 				(result) => {
 					this.choresList = result;
 				}
@@ -44,7 +47,7 @@ export class ToDoListComponent{
 	}
 
 	onDeleteChore(chore){
-		this.databaseService.deleteChore(chore);
+		this.databaseService.deleteChore(chore, this.currentUser);
 		this.displayChores();
 	}
 

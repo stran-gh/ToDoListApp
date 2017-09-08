@@ -1,3 +1,4 @@
+
 <div class="form-group">
 	<div class="row">
 		<div class="col-lg-8">
@@ -11,14 +12,20 @@
 </div>
 
 
-<h2>List User Here</h2>
+<h2>List User Here </h2>
 
 
 <ul class="list-group">
-	<li class="list-group-item" *ngFor="let user of userArray" (click)="selectUser($event, user)">
-		{{user}}
-		<span class="badge badge-default badge-pill">10</span>
-		<button class="btn btn-danger" (click)="deleteUser(user)">Delete</button>
-	</li>
+	<div class="row">
+		<div class = "col-lg-12">
+			<li class="list-group-item" *ngFor="let userObj of userList" (click)="selectUser($event, userObj.user)">
+				{{userObj.user}}	
+				<span class="float-right"> <span class="badge badge-default badge-pill">{{userObj.choreCount}}</span>
+				<button class="btn btn-danger" (click)="deleteUser(userObj.user)">Delete</button>
+				</span>
+			</li>
+		</div>
+	</div>
 </ul>
+
 

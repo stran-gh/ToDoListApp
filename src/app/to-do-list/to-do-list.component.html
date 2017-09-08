@@ -1,18 +1,6 @@
 <div *ngIf="currentUser != null">
 	<h3 class="text-center" >{{currentUser}}'s To Do List</h3>
 
-	<!-- <div class="form-group">
-		<div class="row">
-			<div class="col-lg-8">
-				<input type="text" placeholder="Add a Chore" class="form-control" (keyup.enter)="addNewChore()" [(ngModel)]="choreName"> 
-			</div>
-
-			<div class="col-lg-2">
-				<button class="btn btn-primary" (click)="addNewChore()">Add Chore</button>
-			</div>
-		</div>
-	</div> -->
-
 	<form #f="ngForm" (ngSubmit)="onAddChore(f)">
 		<input type="text" placeholder="Chore Name" class="form-control" name="choreTitle" ngModel>
 		<input type="text" placeholder="Description (Optional)" class="form-control" name="choreDescription" ngModel>
@@ -21,9 +9,11 @@
 
 	<ul class="list-group">
 	<li class="list-group-item" *ngFor="let choreItem of choresList">
+		
 		<p style="color: red" id="title">{{choreItem.chore}} </p>
 		<p style="color: #696969" id="description">{{choreItem.description}}</p>
-		<button class="btn btn-danger" (click)="onDeleteChore(choreItem.chore)">Delete</button>
+		<button class="btn btn-danger float-right" (click)="onDeleteChore(choreItem.chore)">Delete</button>
+		
 	</li>
 	</ul>
 

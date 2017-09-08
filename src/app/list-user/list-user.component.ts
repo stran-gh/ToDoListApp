@@ -13,37 +13,42 @@ import { User } from '../models/user.model';
 export class ListUserComponent{
 	@Input() selectedUser: string;
 	constructor(private userService:UserService,
-			private databaseService: DatabaseService){}
+			private databaseService: DatabaseService){
+	}
 
 	ngOnInit(){
-		this.displayUsers();
+		this.displayUserAndCC();
+
 	}
 
 	userArray:string[] = [];
-
 	userName:string;
+	baseChoreCount: number = 0;
+	userList: User[] = [];
 
-	displayUsers(){
-			return this.databaseService.getUsers().then(
-				(result) => this.userArray = result
+	
+	displayUserAndCC(){
+			return this.databaseService.getUsersToList().then(
+				(result) => {
+					this.userList = result;
+				}
 			);
 	}
-
-	// displayChoreCount(){
-		
-	// }
 
 	selectUser(event, user){
 		this.selectedUser = user;
 		this.userService.currentUser.emit(this.selectedUser);
 		this.databaseService.getCurrentUserKey(this.selectedUser);
-		this.databaseService.getChores(this.selectedUser);
+		this.databaseService.getChores().then(
+			(result) => this.databaseService.currentUserChores.emit(result)
+		);
+		this.displayUserAndCC();
 	}
 
 	deleteUser(user){
 		this.databaseService.deleteUser(user);
 		this.userService.currentUser.emit(null);
-		this.displayUsers();
+		this.displayUserAndCC();
 	}
 
 	addNewUser(){
@@ -51,7 +56,7 @@ export class ListUserComponent{
 			//Do nothing
 		}
 		else{
-			this.databaseService.storeUser(this.userName, null)
+			this.databaseService.storeUser(this.userName, null, this.baseChoreCount)
 			.subscribe(
 				(response) => console.log(response),
 				(error) => console.log(error)
@@ -59,7 +64,7 @@ export class ListUserComponent{
 			this.userName = "";
 		}	
 		setTimeout(() => {
-				this.displayUsers();
+				this.displayUserAndCC();
 			}, 500);
 	}
 	

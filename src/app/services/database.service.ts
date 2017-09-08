@@ -12,22 +12,22 @@ export class DatabaseService{
 
 	currentUserKey: string;
 	currentUserChores = new EventEmitter<Chore[]>();
+	choreCount = new EventEmitter<number>();
 
 
-	storeUser(user: string, chores: Chore){
-		return this.http.post('https://todoproject-8af70.firebaseio.com/data.json', new User(user, chores));
+	storeUser(user: string, chores: Chore, choreCount: number){
+		return this.http.post('https://todoproject-8af70.firebaseio.com/data.json', new User(user, chores, choreCount));
 	}
 
 	storeChore(user: string, choreName: string, choreDescription: string){
 		var data = firebase.database().ref("/data/"+ this.currentUserKey);
 
-		//create post object
+		//create post object for chore to add to db
 		var postData = {
 					chore: choreName,
 					description: choreDescription
 				};	
 		data.child("chores").push(postData); 
-
 	}
 
 	getCurrentUserKey(user: string){
@@ -42,15 +42,33 @@ export class DatabaseService{
 		});
 	}
 
-	getChores(user: string) : Promise<any> {
+	getChoreCount(user: string) : number{
+		var data = firebase.database().ref("/data/" + this.currentUserKey);
+		var choreCount = 0;
+		data.once('value', function(snapshot){
+			choreCount = snapshot.val().choreCount;
+		})
+		return choreCount;
+	}
+
+	getChores() : Promise<any> {
 		var data = firebase.database().ref("/data/" + this.currentUserKey + "/chores");
 		return new Promise<any>((resolve, reject) => {
 			data.once('value', (snapshot) => {
 				var choresList: Chore[] = [];
 				var list = snapshot.val();
+				var choreCount = 0;
+
 				for(let key in list){
 					choresList.push(new Chore(list[key].chore, list[key].description));
+					choreCount++;
 				}
+				//updating chorecount
+				var ccData = firebase.database().ref("/data/" + this.currentUserKey);
+				var updates = {};
+				updates["/choreCount/"] = choreCount;
+				ccData.update(updates);
+
 				resolve(choresList);
 			});
 		})
@@ -74,6 +92,22 @@ export class DatabaseService{
 		})
 	}
 
+	//experimental to see if we can get count from database
+	getUsersToList() : Promise<any>{
+		var data = firebase.database().ref("/data/");
+		let userList: User[] = [];
+		return new Promise<any>((resolve, reject) => {
+			data.on('value', function(snapshot){
+				userList = [];
+				var dataList = snapshot.val();
+				for(let key in dataList){
+					userList.push(new User(dataList[key].user, null, dataList[key].choreCount));
+				}
+				resolve(userList);
+			})
+		});
+	}
+
 	deleteUser(user: string){
 		var database = firebase.database().ref("/data/");
 
@@ -88,9 +122,17 @@ export class DatabaseService{
 			});	
 	}
 
-	deleteChore(choreName: string){
+	deleteChore(choreName: string, user: string){
 		var database = firebase.database().ref("/data/" + this.currentUserKey + "/chores/");
 		var userKey = this.currentUserKey;
+
+		//create post object for choreCount to update
+  		var postDataCC = this.getChoreCount(user) - 1;
+  		var updates = {};
+  		updates["/choreCount/"] = postDataCC;
+
+		firebase.database().ref("/data/"+ this.currentUserKey).update(updates);
+
 		database.once('value', function(snapshot){
 			var choreList = snapshot.val();
 			for(let key in choreList){
