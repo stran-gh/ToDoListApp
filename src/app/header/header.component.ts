@@ -8,6 +8,7 @@ import { AuthService } from '../services/auth.service';
 export class HeaderComponent {
   constructor(private authService: AuthService) { }
 
+  // Method logs user out from firebase authentication
   onLogout(){
   	this.authService.logout();
   }

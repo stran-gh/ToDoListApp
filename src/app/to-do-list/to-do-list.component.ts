@@ -15,10 +15,12 @@ export class ToDoListComponent{
 	currentUser: string;
 	choresList: Chore[] = [];
 	choreDescription: string;
+	chorecount;
 	
 	
 
-	constructor(private userService: UserService, private databaseService: DatabaseService){
+	constructor(private userService: UserService, 
+			private databaseService: DatabaseService){
 	}
 
 	ngOnInit(){
@@ -31,6 +33,7 @@ export class ToDoListComponent{
 		this.databaseService.currentUserChores.subscribe(
 			(resultList: Chore[]) => this.choresList = resultList
 		);
+
 	}
 
 	displayChores(){
@@ -42,13 +45,23 @@ export class ToDoListComponent{
 	}
 
 	onAddChore(f: NgForm){
-		this.databaseService.storeChore(this.currentUser, f.value.choreTitle, f.value.choreDescription);
+		this.databaseService.storeChore(
+				this.currentUser, f.value.choreTitle, f.value.choreDescription);
 		this.displayChores();
+		this.databaseService.currentChoreCount.emit(
+				this.databaseService.getChoreCount(this.currentUser));
+
+		f.setValue({
+			choreTitle: "",
+			choreDescription: ""
+		});
 	}
 
 	onDeleteChore(chore){
 		this.databaseService.deleteChore(chore, this.currentUser);
 		this.displayChores();
+		this.databaseService.currentChoreCount.emit(
+				this.databaseService.getChoreCount(this.currentUser));
 	}
 
 

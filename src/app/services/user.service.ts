@@ -5,12 +5,7 @@ import { DatabaseService } from './database.service';
 
 @Injectable()
 export class UserService{
-	userArray:string[] = [];
 	currentUser = new EventEmitter<string>();
-
-	setUser(user){
-		this.currentUser = user;
-	}
 
 	constructor(){}
 

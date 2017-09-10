@@ -8,13 +8,17 @@
 	</form>
 
 	<ul class="list-group">
-	<li class="list-group-item" *ngFor="let choreItem of choresList">
+	  <li class="list-group-item" *ngFor="let choreItem of choresList">
 		
 		<p style="color: red" id="title">{{choreItem.chore}} </p>
-		<p style="color: #696969" id="description">{{choreItem.description}}</p>
-		<button class="btn btn-danger float-right" (click)="onDeleteChore(choreItem.chore)">Delete</button>
+		<p style="color: #696969" id="description">
+			{{choreItem.description}}
+		</p>
+		<button class="btn btn-danger float-right" 
+			(click)="onDeleteChore(choreItem.chore)">Delete
+		</button>
 		
-	</li>
+	  </li>
 	</ul>
 
 </div>

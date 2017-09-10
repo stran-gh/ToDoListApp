@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
   }
 
+  // Method checks if the user is logged in with Firebase
   isAuthenticated(){
   	return this.authService.isAuthenticated();
   }

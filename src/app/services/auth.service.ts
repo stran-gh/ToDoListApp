@@ -8,6 +8,7 @@ export class AuthService{
 
 	constructor(private router: Router) {}
 
+	// Creates an authenticated user in firebase.
 	signupUser(email: string, password: string){
 		firebase.auth().createUserWithEmailAndPassword(email, password)
 		.catch(
@@ -15,6 +16,8 @@ export class AuthService{
 			)
 	}
 	
+	// Checks if the information entered corresponds to an existing user
+	// and redirects if true.
 	signinUser(email: string, password: string){
 		firebase.auth().signInWithEmailAndPassword(email, password)
 		.then(
@@ -31,10 +34,13 @@ export class AuthService{
 		);
 	}
 
+	// Checks if the firebase token exists. Firebase token is assigned
+	// whenever a user is properly signed in.
 	isAuthenticated(){
 		return this.token != null;
 	}
 
+	// Logs user out from firebase and removes token
 	logout(){
 		firebase.auth().signOut();
 		this.token = null;
