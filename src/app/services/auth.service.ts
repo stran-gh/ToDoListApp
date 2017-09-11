@@ -1,10 +1,12 @@
 import * as firebase from 'firebase';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { EventEmitter } from '@angular/core';
 
 @Injectable()
 export class AuthService{
 	token: string;
+	signInSuccess: boolean = true;
 
 	constructor(private router: Router) {}
 
@@ -27,10 +29,14 @@ export class AuthService{
 				.then(
 					(token: string) => this.token = token
 				);
+				this.signInSuccess = true;
 			}
 		)
 		.catch(
-			error=> console.log(error)
+			error=> {
+				console.log(error);
+				this.signInSuccess = false;
+			}
 		);
 	}
 

@@ -2,22 +2,31 @@
 	<h3 class="text-center" >{{currentUser}}'s To Do List</h3>
 
 	<form #f="ngForm" (ngSubmit)="onAddChore(f)">
-		<input type="text" placeholder="Chore Name" class="form-control" name="choreTitle" ngModel>
-		<input type="text" placeholder="Description (Optional)" class="form-control" name="choreDescription" ngModel>
-		<button class="btn btn-default">Submit</button>
+		<div class="col-md-3">
+			<input type="text" placeholder="Chore Name" class="form-control" name="choreTitle" ngModel>
+		</div>
+		<div class="col-md-7">
+			<input type="text" placeholder="Description (Optional)" class="form-control" name="choreDescription" ngModel>
+		</div>
+		<button class="btn btn-primary"> Add Task</button>
 	</form>
+
+	<hr>
 
 	<ul class="list-group">
 	  <li class="list-group-item" *ngFor="let choreItem of choresList">
-		
-		<p style="color: red" id="title">{{choreItem.chore}} </p>
+		<div>
+		<p style="color: red" id="title">Chore: {{choreItem.chore}} </p>
 		<p style="color: #696969" id="description">
-			{{choreItem.description}}
+			Description: {{choreItem.description}}
 		</p>
-		<button class="btn btn-danger float-right" 
-			(click)="onDeleteChore(choreItem.chore)">Delete
+
+		<button class="btn btn-danger" 
+			(click)="onDeleteChore(choreItem.chore)">
+			<span class="glyphicon glyphicon-trash"> </span>
+			Delete
 		</button>
-		
+		</div>
 	  </li>
 	</ul>
 

@@ -68,7 +68,7 @@ export class ListUserComponent{
 	// in the database and displays on the list.
 	addNewUser(){
 		if(this.userName == null || this.userName == ""){
-			// Send an Error!
+			alert("This field cannot be empty!");
 		}
 		else{
 			this.databaseService.storeUser(
