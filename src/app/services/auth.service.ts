@@ -6,7 +6,7 @@ import { EventEmitter } from '@angular/core';
 @Injectable()
 export class AuthService{
 	token: string;
-	signInSuccess: boolean = true;
+	signInSuccess = new EventEmitter <boolean>();
 
 	constructor(private router: Router) {}
 
@@ -29,13 +29,13 @@ export class AuthService{
 				.then(
 					(token: string) => this.token = token
 				);
-				this.signInSuccess = true;
+				this.signInSuccess.emit(true);
 			}
 		)
 		.catch(
 			error=> {
 				console.log(error);
-				this.signInSuccess = false;
+				this.signInSuccess.emit(false);
 			}
 		);
 	}

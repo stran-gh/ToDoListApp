@@ -16,6 +16,7 @@ export class ToDoListComponent{
 	choresList: Chore[] = [];
 	choreDescription: string;
 	chorecount;
+	choreAlreadyExists: boolean;
 	
 	
 
@@ -34,6 +35,10 @@ export class ToDoListComponent{
 			(resultList: Chore[]) => this.choresList = resultList
 		);
 
+		this.databaseService.choreAlrExists.subscribe(
+			(result) => this.choreAlreadyExists = result
+		);
+
 	}
 
 	displayChores(){
@@ -49,7 +54,7 @@ export class ToDoListComponent{
 				this.currentUser, f.value.choreTitle, f.value.choreDescription);
 
 		if(this.databaseService.addedChoreExists == true){
-			alert("This user already has this chore!");
+			this.databaseService.choreAlrExists.emit(true);
 		} else {
 			this.displayChores();
 			this.databaseService.currentChoreCount.emit(
@@ -58,6 +63,7 @@ export class ToDoListComponent{
 				choreTitle: "",
 				choreDescription: ""
 			});
+			this.databaseService.choreAlrExists.emit(false);
 		}
 	}
 

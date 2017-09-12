@@ -21,9 +21,11 @@ export class DatabaseService{
 
 	// Used for adding users to the database, checking for duplicates.
 	addedUserExists : boolean = false;
+	userAlrExists = new EventEmitter<boolean>();
 
 	// Used for checking if duplicate chores are added.
 	addedChoreExists : boolean = false;
+	choreAlrExists = new EventEmitter<boolean>();
 
 	// Method to store a user in the database
 	storeUser(user: string, chores: Chore, choreCount: number){
@@ -140,9 +142,11 @@ export class DatabaseService{
 			for(let key in list){
 				if(user == (list[key].user)){
 					this.addedUserExists = true;
+					this.userAlrExists.emit(true);
 					break;
 				}	else {
 					this.addedUserExists = false;
+					this.userAlrExists.emit(false);
 				}
 			}
 		})

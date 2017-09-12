@@ -21,6 +21,7 @@ export class ListUserComponent{
 	baseChoreCount: number = 0; // Count added with every new user
 	userList: User[] = []; // User List retrieved with the amount of chores
 	currCC: number = 0; // Chorecount of the current user
+	userAlreadyExists: boolean = false;
 
 	ngOnInit(){
 		// Initial display
@@ -34,7 +35,9 @@ export class ListUserComponent{
 			}
 		);
 
-
+		this.databaseService.userAlrExists.subscribe(
+			(result) => this.userAlreadyExists = result
+		);
 	}
 	
 	// All users with their chores and count are added to the list.
@@ -73,7 +76,7 @@ export class ListUserComponent{
 		}
 		this.databaseService.checkUserKeyExists(this.userName);
 		if(this.databaseService.addedUserExists == true){
-			alert("This person already exists on the list!");
+			this.databaseService.userAlrExists.emit(true);
 		}
 		else{
 			this.databaseService.storeUser(

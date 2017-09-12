@@ -2,6 +2,11 @@
 	<h3 class="text-center" >{{currentUser}}'s To Do List</h3>
 
 	<form #f="ngForm" (ngSubmit)="onAddChore(f)">
+		<div class="alert alert-danger" role="alert" *ngIf="this.choreAlreadyExists"> 
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			This chore already exists for this user!
+		</div>
+
 		<div class="col-md-3">
 			<input type="text" placeholder="Chore Name" class="form-control" name="choreTitle" ngModel>
 		</div>
