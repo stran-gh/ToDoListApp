@@ -47,14 +47,18 @@ export class ToDoListComponent{
 	onAddChore(f: NgForm){
 		this.databaseService.storeChore(
 				this.currentUser, f.value.choreTitle, f.value.choreDescription);
-		this.displayChores();
-		this.databaseService.currentChoreCount.emit(
-				this.databaseService.getChoreCount(this.currentUser));
 
-		f.setValue({
-			choreTitle: "",
-			choreDescription: ""
-		});
+		if(this.databaseService.addedChoreExists == true){
+			alert("This user already has this chore!");
+		} else {
+			this.displayChores();
+			this.databaseService.currentChoreCount.emit(
+			this.databaseService.getChoreCount(this.currentUser));
+			f.setValue({
+				choreTitle: "",
+				choreDescription: ""
+			});
+		}
 	}
 
 	onDeleteChore(chore){

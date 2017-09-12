@@ -10,15 +10,20 @@ import 'rxjs/Rx';
 export class DatabaseService{
 	constructor(private http: Http){}
 
-	//Firebase Key reused in many db methods
+	// Firebase Key reused in many db methods
 	currentUserKey: string;
-
-	//EventEmitter used to display chores in to-do-list component
+ 
+	// EventEmitter used to display chores in to-do-list component
 	currentUserChores = new EventEmitter<Chore[]>(); 
 
-	//Used to update choreCount of a user anytime a chore is added/deleted
+	// Used to update choreCount of a user anytime a chore is added/deleted
 	currentChoreCount = new EventEmitter<number>();
 
+	// Used for adding users to the database, checking for duplicates.
+	addedUserExists : boolean = false;
+
+	// Used for checking if duplicate chores are added.
+	addedChoreExists : boolean = false;
 
 	// Method to store a user in the database
 	storeUser(user: string, chores: Chore, choreCount: number){
@@ -30,15 +35,31 @@ export class DatabaseService{
 
 	// Method to store a chore in the database
 	storeChore(user: string, choreName: string, choreDescription: string){
-		var data = firebase.database().ref("/data/"+ this.currentUserKey);
-
-		//create post object for chore to add to db
-		var postData = {
+		// First check if a chore already exists in database for given user
+		var data = firebase.database().ref(
+				"/data/" + this.currentUserKey + "/chores");
+		data.once('value', (snapshot) => {
+			var list = snapshot.val();
+			for(let key in list){
+				if(list[key].chore == choreName){
+					this.addedChoreExists = true;
+				}	else {
+					this.addedChoreExists = false;
+				}
+			}
+		})
+		if(this.addedChoreExists == false){
+			// Entered chore does not exist, so we can push it on.
+			data = firebase.database().ref("/data/"+ this.currentUserKey);
+			// Create post object for chore to add to database
+			var postData = {
 					chore: choreName,
 					description: choreDescription
-				};	
+			};	
 
-		data.child("chores").push(postData); 
+			data.child("chores").push(postData); 
+		}
+		
 	}
 
 	// Called everytime a different user is selected to update the db key
@@ -111,6 +132,23 @@ export class DatabaseService{
 			})
 		});
 	}
+
+	checkUserKeyExists(user: string){
+		var data = firebase.database().ref("/data");
+		data.once('value', (snapshot) => {
+			var list = snapshot.val();
+			for(let key in list){
+				if(user == (list[key].user)){
+					this.addedUserExists = true;
+					break;
+				}	else {
+					this.addedUserExists = false;
+				}
+			}
+		})
+	}
+
+
 
 	// Method deletes a user from the database.
 	deleteUser(user: string){

@@ -64,11 +64,16 @@ export class ListUserComponent{
 		this.displayUserAndCC();
 	}
 
+
 	// Method activated from the Add User button, stores a new user
 	// in the database and displays on the list.
 	addNewUser(){
 		if(this.userName == null || this.userName == ""){
 			alert("This field cannot be empty!");
+		}
+		this.databaseService.checkUserKeyExists(this.userName);
+		if(this.databaseService.addedUserExists == true){
+			alert("This person already exists on the list!");
 		}
 		else{
 			this.databaseService.storeUser(
