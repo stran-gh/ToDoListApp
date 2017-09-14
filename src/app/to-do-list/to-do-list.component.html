@@ -2,17 +2,22 @@
 	<h3 class="text-center" >{{currentUser}}'s To Do List</h3>
 
 	<form #f="ngForm" (ngSubmit)="onAddChore(f)">
-		<div class="alert alert-danger" role="alert" *ngIf="this.choreAlreadyExists"> 
-			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+		<div class="alert alert-danger" role="alert" 
+		*ngIf="this.choreAlreadyExists"> 
+			<span class="glyphicon glyphicon-exclamation-sign" 
+			aria-hidden="true"></span>
 			This chore already exists for this user!
 		</div>
 
 		<div class="col-md-3">
-			<input type="text" placeholder="Chore Name" class="form-control" name="choreTitle" ngModel>
+			<input type="text" placeholder="Chore Name" class="form-control" 
+			name="choreTitle" ngModel>
 		</div>
 		<div class="col-md-7">
-			<input type="text" placeholder="Description (Optional)" class="form-control" name="choreDescription" ngModel>
+			<input type="text" placeholder="Description (Optional)" 
+			class="form-control" name="choreDescription" ngModel>
 		</div>
+
 		<button class="btn btn-primary"> Add Task</button>
 	</form>
 
